@@ -1,0 +1,12 @@
+.messages-container {
+  width: 80%;
+  .message-box {
+    .message-div {
+      display: flex;
+      justify-content: space-between;
+      li {
+        list-style: none;
+      }
+    }
+  }
+}

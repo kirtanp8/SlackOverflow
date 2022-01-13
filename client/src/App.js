@@ -14,10 +14,11 @@ import axios from 'axios'
 import Message from './components/Message'
 import { getUserId } from './helpers/auth'
 
-
 function App({ id }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [users, setUsers] = useState([]) 
+
+  console.log(getToken())
 
   useEffect(() => {
     if (getToken()) {
@@ -53,8 +54,7 @@ function App({ id }) {
     getData()
   }, [])
 
-  id = getUserId(id)
-  console.log(id)
+  const userId = getUserId(id)
 
   return (
     <>
@@ -62,7 +62,7 @@ function App({ id }) {
         <Nav isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         <Routes>
           {users.map((user, index) => (
-            <Route key={index} path={`/:${id}/${user.username}`} userToMessageId={index + 1} element={<Message />   } />
+            <Route key={index} path={`/:${userId}/:${index + 1}`} userName={user.username}  element={<Message />   } />
           ))}
           <Route path='/' element={<Home />} />
           <Route path='/posts' element={<PostList />} />

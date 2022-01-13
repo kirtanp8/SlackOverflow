@@ -5,7 +5,7 @@ import { getToken } from './auth'
 export const fetchOnePost = async (id) => {
   const config = {
     method: 'get',
-    url: `http://127.0.0.1:8000/api/posts/${id}`,
+    url: `/api/posts/${id}/`,
     headers: {},
   }
   const response = await axios(config)

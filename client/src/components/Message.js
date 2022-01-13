@@ -1,61 +1,58 @@
 import React from 'react'
 import { useState } from 'react'
-import { useLocation } from 'react-router'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { getUserId } from '../helpers/auth'
 import FormInput from './FormInput'
 import { getToken } from '../helpers/auth'
+import { useParams } from 'react-router'
 
 const Message = () => {
   const id = getUserId()
-  const location = useLocation()
-  const [users, setUsers] = useState() 
-  const [userToMessage, setUserToMessage] = useState()
-  const [userToMessageId, setUserToMessageId] = useState() 
+  // const [users, setUsers] = useState() 
   const [messagesSent, setMessagesSent] = useState()
   const [messagesReceived, setMessageReceived] = useState()
-  const [combinedMessages, setCombinedMessages] = useState()
-  const [count, setCount] = useState(0)
+  // const [combinedMessages, setCombinedMessages] = useState()
+  const [userMessaged, setUserMessaged] = useState() 
+  const params = useParams()
+  const userToMessageId = params[1]
 
   useEffect(() => {
-    setUserToMessage(location.pathname.split('/')[location.pathname.split('/').length - 1])
-  }, [location])
+    const getUserMessaged = async () => {
+      const config = {
+        method: 'get',
+        url: `/api/chats/message_detail/sent/${userToMessageId}/${id}/`,
+        headers: { 
+          Authorization: `Bearer ${getToken()}`, 
+          'Content-Type': 'application/json',
+        },
+        data: data,
+      }
 
-
-  console.log(userToMessage)
-  console.log(userToMessageId)
-
-  useEffect(() => {
-
-    const getData = async () => {
-      const res = await axios.get('/api/auth/') 
-      console.log(res.data)
-      setUsers(res.data)
-
-      for (let i = 0; i < users.length; i++) {
-        if (users[i].username === `${userToMessage}`) {
-          setUserToMessageId(i + 1)
-          console.log(userToMessageId)
-        } else {
-          console.log('Do Nothing')
-        }
+      try {
+        const response = await axios(config).catch(handleError)
+        setUserMessaged(response.data[0].sent_to)
+        console.log(userMessaged)
+      } catch (err) {
+        console.log(err)
+        setIsError(true)
       }
     }
-    setInterval(() => {
-      getData()
-    }, 500)
-    
-  }, [location])
+    getUserMessaged()
+  }, [params, userMessaged])
+
+
 
   
+
+
 
   useEffect(() => {
     const getMessagesSent = async () => {
 
       const config = {
         method: 'get',
-        url: `/api/chats/message_detail/sent/${id}/${userToMessageId}/`,
+        url: `/api/chats/message_detail/sent/${userToMessageId}/${id}/`,
         headers: { 
           Authorization: `Bearer ${getToken()}`, 
           'Content-Type': 'application/json',
@@ -65,24 +62,21 @@ const Message = () => {
 
       try {
         const response = await axios(config).catch(handleError)
-        console.log(response.data)
         setMessagesSent(response.data)
-        console.log(messagesSent)
       } catch (err) {
         console.log(err)
         setIsError(true)
       }
     }
     getMessagesSent()
+  }, [params])
 
-
-  }, [location, count])
 
   useEffect(() => {
     const getReceivedData = async () => {
       const config = {
         method: 'get',
-        url: `/api/chats/message_detail/received/${id}/${userToMessageId}`,
+        url: `/api/chats/message_detail/received/${userToMessageId}/${id}/`,
         headers: { 
           Authorization: `Bearer ${getToken()}`, 
           'Content-Type': 'application/json',
@@ -92,31 +86,15 @@ const Message = () => {
 
       try {
         const response = await axios(config).catch(handleError)
-        console.log(response.data)
         setMessageReceived(response.data)
       } catch (err) {
         console.log(err)
         setIsError(true)
       }
-
-      if (messagesSent && messagesReceived) {
-        setCombinedMessages(messagesSent.concat(messagesReceived))
-        console.log('hey')
-      } else if (messagesSent && !messagesReceived) {
-        setCombinedMessages(messagesSent)
-        console.log('heya')
-      } else if (messagesReceived && !messagesSent) {
-        setCombinedMessages(messagesReceived)
-        console.log('heya p')
-      } else {
-        setCombinedMessages(['Do Nothing', 'Cat'])
-      }
-
-
     }
-
     getReceivedData()
-  }, [location, count])
+  }, [params])
+
 
 
   const [data, setData] = useState({
@@ -136,30 +114,6 @@ const Message = () => {
     }
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    console.log(getToken())
-    setCount(count + 1)
-    const config = {
-      method: 'post',
-      url: `/api/chats/message_detail/send_message/${userToMessageId}/`,
-      headers: { 
-        Authorization: `Bearer ${getToken()}`, 
-        'Content-Type': 'application/json',
-      },
-      data: data,
-    }
-    
-    console.log(data)
-
-    try {
-      const response = await axios(config).catch(handleError)
-      console.log(response.data)
-      setIsError(false)
-    } catch (err) {
-      setIsError(true)
-    }
-  }
 
   const handleFormChange = (event) => {
     const { name, value } = event.target
@@ -170,22 +124,78 @@ const Message = () => {
     console.log(data)
   }
 
+  // useEffect(() => {
+  //   if (messagesSent && messagesReceived) {
+  //     setCombinedMessages(messagesSent.concat(messagesReceived))
+  //   } else if (messagesSent && !messagesReceived) {
+  //     setCombinedMessages(messagesSent)
+  //   } else if (messagesReceived && !messagesSent) {
+  //     setCombinedMessages(messagesReceived)
+  //   } else {
+  //     setCombinedMessages(['Do Nothing', 'Cat'])
+  //   }
+  
+  // }, [params])
+
+
+
+
+  
+  // console.log(combinedMessages)
+  console.log(messagesReceived)
+  console.log(messagesSent)
+
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const config = {
+      method: 'post',
+      url: `/api/chats/message_detail/send_message/${userToMessageId}/`,
+      headers: { 
+        Authorization: `Bearer ${getToken()}`, 
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    }
+
+    try {
+      const response = await axios(config).catch(handleError)
+      console.log(response)
+      setIsError(false)
+    } catch (err) {
+      setIsError(true)
+    }
+    window.location.reload(true)
+  }
+
+  console.log(messagesReceived)
+  console.log(messagesSent)
 
 
   const formInputProps = { data, errorInfo, handleFormChange }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Hello World</h1>
-        {combinedMessages?.sort(((a, b) => a.created_on > b.created_on && 1 || -1)).map((message, index) => (
-          <ul key={index}>
-            <li className='text-message'>{message.text}</li>
-            {/* <li className='text-message-date'>{message.created_on.split('T0')[0]}</li>
-            <li className='text-message-time'>{message.created_on.split('T0')[1]}</li> */}
-            {/* <li className='text-message-time'>{message.author.username}</li> */}
+    <div className='messages-container'>
+      <form className='message-box' onSubmit={handleSubmit}>
+        <h1>Hello World</h1>  
+        {messagesSent?.sort(((a, b) => a.created_on > b.created_on && 1 || -1)).map((message, index) => (
+          <ul className='message-div' key={index}>
+            <li className='text-message'>{message.text}</li> 
+            <li className='text-message-date'>{message.created_on.split('T0')[0]}</li>
+            <li className='text-message-time'>{message.created_on.split('T0')[1]}</li> 
+            <li className='text-message-time'>{message.author.username}</li>
           </ul>
         ))}
+        {  
+          userMessaged === userToMessageId ? messagesReceived?.sort(((a, b) => a.created_on > b.created_on && 1 || -1)).map((message, index) => (
+            <ul className='message-div' key={index}>
+              <li className='text-message'>{message.text}</li> 
+            </ul>
+          )) 
+            :
+            <></>
+        }
         <FormInput
           placeholder='send a message'
           type='text'

@@ -3,6 +3,7 @@
 @import "postlist";
 @import "postadd";
 @import "home";
+@import "message";
 
 * {
   box-sizing: border-box;
@@ -11,4 +12,5 @@
 #root {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }

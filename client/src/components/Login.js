@@ -28,7 +28,7 @@ const Login = ({ setIsLoggedIn }) => {
     
     const config = {
       method: 'post',
-      url: 'http://localhost:8000/api/auth/login/',
+      url: '/api/auth/login/',
       headers: { 
         'Content-Type': 'application/json',
       },
@@ -40,7 +40,6 @@ const Login = ({ setIsLoggedIn }) => {
       setToken(response.data.token)
       console.log(response.data.token)
       setUserId(response.data.id[0])
-      console.log(response.data.id[0])
       navigate('/')
       setIsLoggedIn(true)
       setIsError(false)

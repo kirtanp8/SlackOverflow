@@ -51,7 +51,7 @@ export const Nav = ({ isLoggedIn, setIsLoggedIn, id }) => {
               </li>
               {users.map((user, index) => (
                 <li key={index + 1}>
-                  <Link userToMessageId={index + 1} to={`/${id}/${user.username}`}>{user.username}</Link>
+                  <Link userToMessageId={index + 1} to={`/${id}/${index + 1}`}>{user.username}</Link>
                 </li>
               ))}
             </>
