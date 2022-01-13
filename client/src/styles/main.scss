@@ -1,0 +1,14 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "nav";
+@import "postlist";
+@import "postadd";
+@import "home";
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+}

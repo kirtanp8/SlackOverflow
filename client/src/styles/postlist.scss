@@ -1,0 +1,57 @@
+.post {
+  width: 100%;
+  ul {
+    margin-top: 3%;
+    overflow: scroll;
+    height: 80%;
+    width: 100%;
+    li {
+      list-style: none;
+      .date {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        .border-line-left {
+          width: 40%;
+          height: 2%;
+          margin: auto;
+          border: 0.4px solid grey;
+        }
+        .date-div {
+          text-align: center;
+          width: 20%;
+          border: 2px solid black;
+        }
+        .border-line-right {
+          width: 40%;
+          height: 2%;
+          margin: auto;
+          border: 0.4px solid grey;
+        }
+      }
+      .username-profile {
+        display: flex;
+        img {
+          height: 3%;
+          width: 3%;
+        }
+        .username {
+          font-size: 1rem;
+          width: 3%;
+        }
+        .post-image {
+        }
+        .bottom-border {
+          width: 100%;
+          margin: auto;
+          border: 1px solid grey;
+        }
+        .time {
+          font-size: 1rem;
+          width: 10%;
+          color: grey;
+        }
+      }
+    }
+  }
+}
