@@ -62,6 +62,5 @@ class PostListView(APIView):
 
     def get(self, request):
         posts = Post.objects.all()
-        print(posts)
         serialized_posts = PopulatedPostSerializer(posts, many=True)
         return Response(serialized_posts.data, status=status.HTTP_200_OK)

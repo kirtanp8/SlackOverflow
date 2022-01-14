@@ -13,7 +13,7 @@ class Post(models.Model):
     image_four = models.CharField(max_length=500, blank=True)
     author = models.ForeignKey("jwt_auth.User", on_delete=models.CASCADE)
     post_reply = models.ManyToManyField(
-        "post_reply.PostReply", related_name="postreply", blank=True)
+        "post_reply.PostReply", related_name="post_reply", blank=True)
 
     def __str__(self):
         return self.text

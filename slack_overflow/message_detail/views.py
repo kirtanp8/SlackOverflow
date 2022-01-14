@@ -72,7 +72,7 @@ class MessageSentListBetweenUser(APIView):
     def get(self, request, author, sent_to):
 
         message = Message.objects.filter(author=author, sent_to=sent_to)
-        serialized_message = MessagesSerializer(message, many=True)
+        serialized_message = PopulatedMessagesSerializer(message, many=True)
         return Response(serialized_message.data, status=status.HTTP_200_OK)
 
 
@@ -83,7 +83,7 @@ class SendMessageView(APIView):
         request.data["author"] = request.user.id
         print(request.data)
         request.data["sent_to"] = pk
-        message = MessagesSerializer(data=request.data)
+        message = PopulatedMessagesSerializer(data=request.data)
         if message.is_valid():
             message.save()  # <--- django ORM method to save to db
             return Response(message.data, status=status.HTTP_201_CREATED)

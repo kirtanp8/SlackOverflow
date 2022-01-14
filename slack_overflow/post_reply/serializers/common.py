@@ -7,5 +7,5 @@ class PostReplySerializer(serializers.ModelSerializer):
         model = PostReply
         fields = '__all__'
 
-        def __str__(self):
-            return self
+        # def __str__(self):
+        #     return self

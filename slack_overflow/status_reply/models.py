@@ -1,17 +1,17 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 
-class PostReply(models.Model):
+class StatusReply(models.Model):
     message_sent = models.TextField()
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
         "jwt_auth.User",   on_delete=models.CASCADE)
-    # posts = models.ForeignKey(
-    #     "posts.Post", related_name="post_reply", on_delete=models.CASCADE
-    # )
-
-    def __str__(self):
-        return self.message_sent
+    status_message = models.ForeignKey(
+        "status.Status",
+        related_name="status",
+        on_delete=models.CASCADE
+    )
