@@ -30,7 +30,7 @@ const PostAdd = () => {
     console.log(getToken())
     const config = {
       method: 'post',
-      url: '/api/posts/',
+      url: '/api/status/',
       headers: { 
         Authorization: `Bearer ${getToken()}`, 
         'Content-Type': 'application/json',

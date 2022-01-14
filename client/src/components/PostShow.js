@@ -12,7 +12,7 @@ const PostShow = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get(`/api/posts/${id}/`) // * <-- replace with your endpoint
+      const res = await axios.get(`/api/status/${id}/`) // * <-- replace with your endpoint
       console.log(res.data)
       setPosts(res.data)
     }
@@ -43,7 +43,7 @@ const PostShow = () => {
     console.log(getToken())
     const config = {
       method: 'post',
-      url: '/api/posts/',
+      url: '/api/status/',
       headers: { 
         Authorization: `Bearer ${getToken()}`, 
         'Content-Type': 'application/json',

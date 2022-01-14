@@ -99,7 +99,7 @@ const Message = () => {
 
   const [data, setData] = useState({
     text: '',
-    author: parseInt(`${id}`),
+    // author: parseInt(`${id}`),
   })
 
   const [errorInfo, setErrorInfo] = useState({})

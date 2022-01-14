@@ -13,6 +13,7 @@ import Register from './components/Register'
 import axios from 'axios'
 import Message from './components/Message'
 import { getUserId } from './helpers/auth'
+import PostView from './pages/PostView'
 
 function App({ id }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -69,6 +70,7 @@ function App({ id }) {
           {/* <Route path='/posts/:id' element={<PostShow />} /> */}
           <Route path='/login' element={<UserLogIn />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/posts/:id' element={<PostView />} />
           <Route element={<NotFound />} />
         </Routes>
       </Router>
